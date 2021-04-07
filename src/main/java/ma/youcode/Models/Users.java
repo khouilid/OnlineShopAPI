@@ -1,5 +1,7 @@
 package ma.youcode.Models;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import javax.persistence.*;
 import java.io.Serializable;
 import java.util.Objects;
@@ -23,6 +25,7 @@ public class Users implements Serializable {
     @Column(name = "email", unique = true)
     private String email;
     @Column(name = "pwd")
+    @JsonIgnore
     private String pwd;
     @Column(name = "type")
     private String type;
