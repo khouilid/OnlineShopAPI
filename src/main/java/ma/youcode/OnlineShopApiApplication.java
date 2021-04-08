@@ -1,6 +1,7 @@
 package ma.youcode;
 
 import ma.youcode.Fillters.AuthFilter;
+import ma.youcode.Fillters.RoleFilter;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.web.servlet.FilterRegistrationBean;
@@ -19,7 +20,29 @@ public class OnlineShopApiApplication {
         FilterRegistrationBean<AuthFilter> filterRegistration = new FilterRegistrationBean<>();
         AuthFilter authFilter = new AuthFilter();
         filterRegistration.setFilter(authFilter);
+        filterRegistration.addUrlPatterns("/api/user/*");
+        return filterRegistration;
+    }
+    @Bean
+    public FilterRegistrationBean<RoleFilter> filterRoleBean() {
+        FilterRegistrationBean<RoleFilter> filterRegistration = new FilterRegistrationBean<>();
+        RoleFilter roleFilter = new RoleFilter();
+        filterRegistration.setFilter(roleFilter);
         filterRegistration.addUrlPatterns("/api/user/users/*");
         return filterRegistration;
     }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 }

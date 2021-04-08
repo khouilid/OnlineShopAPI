@@ -34,13 +34,13 @@ public class AuthFilter extends GenericFilterBean {
             //check if the token provided
             if(bearer.length > 1 && bearer[1] != null ){
                 token = bearer[1];
-                System.out.println(bearer[0] + " " + bearer[1]);
                 try {
                     //parse the String into json
                     Claims claims = Jwts.parser().setSigningKey("onlineshopapi").parseClaimsJws(token).getBody();
-                    //sent the user is around the app with http request
-                    request.setAttribute("id", Integer.parseInt(claims.get("Id").toString()));
 
+                        //sent the user is around the app with http request
+                        request.setAttribute("id", Long.parseLong(claims.get("Id").toString()));
+                        request.setAttribute("type", claims.get("type").toString());
 
                 } catch (Exception e) {
                         response.sendError(HttpStatus.UNAUTHORIZED.value(), "Invalid token");

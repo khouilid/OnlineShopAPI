@@ -11,13 +11,11 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.Date;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import javax.servlet.http.HttpServletRequest;
+import java.util.*;
 
 @RestController
-@RequestMapping("/api/user")
+@RequestMapping("/api/")
 public class UserController {
 
 
@@ -46,7 +44,6 @@ public class UserController {
             Users usr = userService.loginService(user.get("email"), user.get("pwd"));
            //return the token
             return new ResponseEntity<>(generateurJWTTokern(usr), HttpStatus.OK);
-
         } catch (AuthException e) {
             msg.put("message", e.getMessage());
             return new ResponseEntity<>(msg, HttpStatus.BAD_REQUEST);
@@ -54,20 +51,70 @@ public class UserController {
     }
 
 
-    @GetMapping("users/all/{role}")
-    public ResponseEntity<? extends Object> getAll(@PathVariable(name = "role") String role) {
-        Map<String, String> msg = new HashMap<>();
+    @GetMapping("/user/users/all/{role}")
+    public ResponseEntity<? extends Object> getAllUsers(@PathVariable(name = "role") String role) {
+
         try {
             List<Users> users = userService.getAllUsers(role);
             //return the token
             return new ResponseEntity<>(users, HttpStatus.OK);
         } catch (Exception e) {
+            Map<String, String> msg = new HashMap<>();
             msg.put("message", e.getMessage());
             return new ResponseEntity<>(msg, HttpStatus.BAD_REQUEST);
         }
+    }
+    @GetMapping("/user/users/find/{id}")
+    public ResponseEntity<? extends Object> findUserByID(@PathVariable(name="id") Long id){
+        try {
+            Optional<Users> user = userService.getByID(id);
 
+            return new ResponseEntity<>(user, HttpStatus.OK);
+
+        } catch (Exception e) {
+            Map<String, String> msg = new HashMap<>();
+            msg.put("message", e.getMessage());
+            return new ResponseEntity<>(msg, HttpStatus.BAD_REQUEST);
+        }
     }
 
+
+
+    @PutMapping("/user/users/delete/{id}")
+    public ResponseEntity<? extends Object> blockUserAccount(@PathVariable("id") Long id){
+        Map<String , Object> msg = new HashMap<>();
+        try {
+            userService.removeUserAccount(id);
+            msg.put("success", true);
+            return new ResponseEntity<>(msg , HttpStatus.OK);
+        } catch (Exception e) {
+            msg.put("success", false);
+            msg.put("message", e.getMessage());
+            return new ResponseEntity<>(msg , HttpStatus.BAD_REQUEST);
+        }
+    }
+
+
+
+    @PutMapping("/user/update")
+    public ResponseEntity<? extends  Object> updateAccount(HttpServletRequest request, @RequestBody Map<String, String> user){
+        Map<String , Object> msg = new HashMap<>();
+        Long id = (Long) request.getAttribute("id");
+        try {
+            Users usr = new Users(user.get("fullName"), user.get("email"), user.get("pwd"));
+            usr.setId(id);
+            userService.updateAccoutInfos(usr);
+            msg.put("success", true);
+            return new ResponseEntity<>(msg , HttpStatus.OK);
+
+        } catch (Exception e) {
+            msg.put("success", false);
+            msg.put("message", e.getMessage());
+            return new ResponseEntity<>(msg , HttpStatus.BAD_REQUEST);
+
+        }
+
+    }
 
     private Map<String, String> generateurJWTTokern(Users user) {
         long time = System.currentTimeMillis();
@@ -79,6 +126,7 @@ public class UserController {
                 .claim("Id", user.getId())
                 .claim("email", user.getEmail())
                 .claim("fullName", user.getFullName())
+                .claim("type", user.getType())
                 .compact();
         Map<String, String> map = new HashMap<>();
         map.put("token", token);

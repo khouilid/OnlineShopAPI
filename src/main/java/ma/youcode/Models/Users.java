@@ -29,13 +29,16 @@ public class Users implements Serializable {
     private String pwd;
     @Column(name = "type")
     private String type;
+    @Column(name = "status", columnDefinition = "boolean default false")
+    private Boolean status;
 
     public Users() {
     }
 
-    public Users(String email, String pwd) {
+    public Users( String fullName, String email, String pwd) {
         this.email = email;
         this.pwd = pwd;
+        this.fullName = fullName;
     }
 
     public Users(String fullName, String email, String pwd, String type) {
@@ -44,6 +47,16 @@ public class Users implements Serializable {
         this.pwd = pwd;
         this.type = type;
     }
+
+    public Boolean getStatus() {
+        return status;
+    }
+
+    public void setStatus(Boolean status) {
+        this.status = status;
+    }
+
+
 
     public Long getId() {
         return id;
