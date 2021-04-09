@@ -47,6 +47,14 @@ public class Users implements Serializable {
         this.pwd = pwd;
         this.type = type;
     }
+    public Users(Long id, String fullName, String email, String pwd, String type, Boolean status) {
+        this.id = id;
+        this.fullName = fullName;
+        this.email = email;
+        this.pwd = pwd;
+        this.type = type;
+        this.status = status;
+    }
 
     public Boolean getStatus() {
         return status;

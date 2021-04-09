@@ -101,8 +101,7 @@ public class UserController {
         Map<String , Object> msg = new HashMap<>();
         Long id = (Long) request.getAttribute("id");
         try {
-            Users usr = new Users(user.get("fullName"), user.get("email"), user.get("pwd"));
-            usr.setId(id);
+            Users usr = new Users(id,user.get("fullName"), user.get("email"), user.get("pwd"),user.get("type"), false);
             userService.updateAccoutInfos(usr);
             msg.put("success", true);
             return new ResponseEntity<>(msg , HttpStatus.OK);
