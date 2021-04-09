@@ -28,6 +28,7 @@ public class UserController {
         Map<String, String> msg = new HashMap<>();
         try {
             Users usr = userService.createAccountService(user.get("fullName"), user.get("email"), user.get("pwd"), user.get("type"));
+            usr.setStatus(false);
             return new ResponseEntity<>(generateurJWTTokern(usr), HttpStatus.OK);
         } catch (Exception e) {
             msg.put("message", e.getMessage());
