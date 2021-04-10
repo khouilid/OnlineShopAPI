@@ -1,7 +1,7 @@
 package ma.youcode;
 
-import ma.youcode.Fillters.AuthFilter;
-import ma.youcode.Fillters.RoleFilter;
+import ma.youcode.Filters.AuthFilter;
+import ma.youcode.Filters.RoleFilter;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.web.servlet.FilterRegistrationBean;

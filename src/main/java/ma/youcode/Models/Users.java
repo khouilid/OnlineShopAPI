@@ -29,8 +29,8 @@ public class Users implements Serializable {
     private String pwd;
     @Column(name = "type")
     private String type;
-    @Column(name = "status", columnDefinition = "boolean default false")
-    private Boolean status;
+    @Column(name = "status")
+    private Boolean status = false;
 
     public Users() {
     }
