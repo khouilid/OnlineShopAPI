@@ -29,9 +29,40 @@ public class AuthFilter extends GenericFilterBean {
     public void doFilter(ServletRequest servletRequest, ServletResponse servletResponse, FilterChain filterChain) throws IOException, ServletException {
 
         HttpServletRequest request = (HttpServletRequest) servletRequest;
-        HttpServletResponse response = (HttpServletResponse)  servletResponse;
+        HttpServletResponse response = (HttpServletResponse) servletResponse;
+         //TODO move this method to utils package
+        //get the token from http request
+        String token = request.getHeader("auth");
+        if (token != null){
+            //split the String into two part
+            //1 - Bearer string
+            //2 - the real token
+            String[] bearer = token.split("Bearer");
+            //check if the token provided
+            if(bearer.length > 1 && bearer[1] != null ){
+                token = bearer[1];
+                try {
+                    //parse the String into json
+                    Claims claims = Jwts.parser().setSigningKey("onlineshopapi").parseClaimsJws(token).getBody();
 
-        token.tokenValidateur(request, response);
+                    //sent the user is around the app with http request
+                    request.setAttribute("id", Long.parseLong(claims.get("Id").toString()));
+                    request.setAttribute("type", claims.get("type").toString());
+
+                } catch (Exception e) {
+                    response.sendError(HttpStatus.UNAUTHORIZED.value(), "Invalid token");
+                    return;
+                }
+            }else {
+                response.sendError(HttpStatus.UNAUTHORIZED.value(), "The token must be Bearer [token]");
+                return;
+            }
+
+        }else {
+            response.sendError(HttpStatus.UNAUTHORIZED.value(), "Must provide a token");
+            return;
+        }
+
 
         filterChain.doFilter(request, response);
 

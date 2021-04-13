@@ -1,11 +1,9 @@
 package ma.youcode.Controllers;
 
 
-import io.jsonwebtoken.Jwts;
-import io.jsonwebtoken.SignatureAlgorithm;
 import ma.youcode.Exceptions.AuthException;
 import ma.youcode.Models.Users;
-import ma.youcode.Services.UserService;
+import ma.youcode.Services.UserServiceInterface;
 import ma.youcode.Ulits.Token;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -13,7 +11,10 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
-import java.util.*;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.Optional;
 
 @RestController
 @RequestMapping("/api/")
@@ -21,7 +22,7 @@ public class UserController {
 
 
     @Autowired
-    private UserService userService;
+    private UserServiceInterface userService;
     @Autowired
     private Token token;
 
@@ -32,7 +33,7 @@ public class UserController {
         try {
             Users usr = userService.createAccountService(user.get("fullName"), user.get("email"), user.get("pwd"), user.get("type"));
             usr.setStatus(false);
-            return new ResponseEntity<>(token.generateurJWTTokern(usr), HttpStatus.OK);
+            return new ResponseEntity<>(token.generateurJWTTokern(usr), HttpStatus.CREATED);
         } catch (Exception e) {
             msg.put("message", e.getMessage());
             return new ResponseEntity<>(msg, HttpStatus.BAD_REQUEST);
