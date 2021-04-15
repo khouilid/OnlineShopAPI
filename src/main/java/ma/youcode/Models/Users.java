@@ -30,7 +30,7 @@ public class Users implements Serializable {
     @Column(name = "type")
     private String type;
     @Column(name = "status")
-    private Boolean status = false;
+    private Boolean status = true;
 
     public Users() {
     }

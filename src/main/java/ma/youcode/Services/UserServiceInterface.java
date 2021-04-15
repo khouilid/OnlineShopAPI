@@ -19,7 +19,7 @@ public interface UserServiceInterface {
     List<Users> getAllUsers(String role);
 
 
-    void removeUserAccount(Long id);
+    void changeUserAccountStatus(Long id , Boolean stt );
 
 
     void updateAccoutInfos(Users users);

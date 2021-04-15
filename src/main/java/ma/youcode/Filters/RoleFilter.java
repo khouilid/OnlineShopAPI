@@ -18,15 +18,12 @@ import java.io.IOException;
 public class RoleFilter extends GenericFilterBean {
     @Override
     public void doFilter(ServletRequest servletRequest, ServletResponse servletResponse, FilterChain filterChain) throws IOException, ServletException {
-
-
+        
         HttpServletRequest request = (HttpServletRequest) servletRequest;
         HttpServletResponse response = (HttpServletResponse) servletResponse;
 
         if (!request.getAttribute("type").toString().equals("admin")) {
-
-            response.sendError(HttpStatus.UNAUTHORIZED.value(), "You're not allowed get this information's");
-
+            response.sendError(HttpStatus.METHOD_NOT_ALLOWED.value(), "You're not allowed get this information's");
             return;
         }
         filterChain.doFilter(request, response);

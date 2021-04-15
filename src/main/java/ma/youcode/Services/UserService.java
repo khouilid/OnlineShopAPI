@@ -62,14 +62,14 @@ public class UserService implements UserServiceInterface {
     }
 
 
-    public void removeUserAccount(Long id) {
+    public void changeUserAccountStatus(Long id , Boolean stt) {
         try {
             //check account exist
             Optional<Users> victime = userRepository.findById(id);
             if (victime.isEmpty()) throw new AuthException("Account not exist");
             Users user = victime.get();
             //update it status = block it
-            user.setStatus(true);
+            user.setStatus(stt);
             userRepository.save(user);
         } catch (AuthException e) {
             throw new AuthException("Invalid request");
