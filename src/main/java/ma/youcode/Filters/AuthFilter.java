@@ -4,6 +4,7 @@ import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
 import ma.youcode.Ulits.Token;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.annotation.Order;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Component;
 import org.springframework.web.filter.GenericFilterBean;
@@ -18,7 +19,6 @@ import java.io.IOException;
 
 
 @Component
-//@Order(1)
 public class AuthFilter extends GenericFilterBean {
 
 

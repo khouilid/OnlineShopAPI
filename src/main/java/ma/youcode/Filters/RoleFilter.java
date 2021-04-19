@@ -1,5 +1,6 @@
 package ma.youcode.Filters;
 
+import org.springframework.core.annotation.Order;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Component;
 import org.springframework.web.filter.GenericFilterBean;
@@ -14,7 +15,6 @@ import java.io.IOException;
 
 
 @Component
-//@Order(2)
 public class RoleFilter extends GenericFilterBean {
     @Override
     public void doFilter(ServletRequest servletRequest, ServletResponse servletResponse, FilterChain filterChain) throws IOException, ServletException {

@@ -2,18 +2,22 @@ package ma.youcode.Services;
 
 
 import ma.youcode.Exceptions.AuthException;
+import ma.youcode.Models.OurUserDetails;
 import ma.youcode.Models.Users;
 import ma.youcode.Repositorys.UserRepository;
 import ma.youcode.Ulits.EmailValidateur;
 import org.mindrot.jbcrypt.BCrypt;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.core.userdetails.UserDetailsService;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.Optional;
 
 @Service
-public class UserService implements UserServiceInterface {
+public class UserService implements UserServiceInterface, UserDetailsService {
 
 
     @Autowired
@@ -62,7 +66,7 @@ public class UserService implements UserServiceInterface {
     }
 
 
-    public void changeUserAccountStatus(Long id , Boolean stt) {
+    public void changeUserAccountStatus(Long id, Boolean stt) {
         try {
             //check account exist
             Optional<Users> victime = userRepository.findById(id);
@@ -88,4 +92,12 @@ public class UserService implements UserServiceInterface {
     }
 
 
+    @Override
+    public UserDetails loadUserByUsername(String s) throws UsernameNotFoundException {
+        Users user = userRepository.findByEmail(s);
+        if (user == null) {
+            throw new UsernameNotFoundException(s);
+        }
+        return new OurUserDetails(user);
+    }
 }

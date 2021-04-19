@@ -11,6 +11,7 @@ import java.util.Map;
 
 @Component
 public class Token {
+
     public Map<String, String> generateurJWTTokern(Users user) {
         long time = System.currentTimeMillis();
 
