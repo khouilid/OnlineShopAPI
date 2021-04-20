@@ -13,9 +13,6 @@ import org.springframework.security.web.csrf.CsrfFilter;
 @EnableWebSecurity
 public class SpringSecurityConfig extends WebSecurityConfigurerAdapter {
 
-//    @Autowired
-//    private PasswordEncoder passwordEncoder;
-
     @Override
     protected void configure(HttpSecurity http) throws Exception {
         http
@@ -23,14 +20,10 @@ public class SpringSecurityConfig extends WebSecurityConfigurerAdapter {
                 .authorizeRequests()
                 .antMatchers(HttpMethod.POST, "/api/login", "/api/signup")
                 .permitAll()
-                .anyRequest()
-                .authenticated();
-
-
-        http.antMatcher("/api/user/**").authorizeRequests() //
-                .anyRequest().authenticated() //
                 .and()
+                .antMatcher("/api/user/**")
                 .addFilterBefore(new AuthFilter(), CsrfFilter.class);
+
 
     }
 
