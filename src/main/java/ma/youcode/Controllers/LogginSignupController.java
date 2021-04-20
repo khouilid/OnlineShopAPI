@@ -2,6 +2,7 @@ package ma.youcode.Controllers;
 
 import ma.youcode.Exceptions.AuthException;
 import ma.youcode.Models.Users;
+import ma.youcode.Services.EmailServiceImpl;
 import ma.youcode.Services.UserServiceInterface;
 import ma.youcode.Ulits.Token;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -12,7 +13,6 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.HashMap;
 import java.util.Map;
-
 
 
 @RestController
@@ -26,13 +26,8 @@ public class LogginSignupController {
     @Autowired
     private PasswordEncoder passwordEncoder;
 
-
-
-
-    @GetMapping("/hello")
-    public String helloWorld(){
-        return "hello the fucking world";
-    }
+    @Autowired
+    EmailServiceImpl emailService;
 
 
     @PostMapping("/signup")
@@ -53,6 +48,9 @@ public class LogginSignupController {
 
     @PostMapping("/login")
     public ResponseEntity<? extends Object> login(@RequestBody Map<String, String> user) throws AuthException {
+
+        emailService.sendConfirmationEmail("abdelkbirkhouilid32@gmail.com", "test 1", "hello");
+
         Map<String, String> msg = new HashMap<>();
         try {
             Users usr = userService.loginService(user.get("email"), user.get("pwd"));
