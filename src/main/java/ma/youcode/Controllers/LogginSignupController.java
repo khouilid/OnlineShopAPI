@@ -8,8 +8,10 @@ import ma.youcode.Ulits.Token;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.crypto.password.PasswordEncoder;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -24,19 +26,20 @@ public class LogginSignupController {
     private Token token;
 
     @Autowired
-    private PasswordEncoder passwordEncoder;
-
-    @Autowired
-    EmailServiceImpl emailService;
+    private EmailServiceImpl emailService;
 
 
     @PostMapping("/signup")
     public ResponseEntity<Map<String, String>> saveUser(@RequestBody Map<String, String> user) {
+        //TODO send email when the user register
+
         Map<String, String> msg = new HashMap<>();
         try {
             Users usr = userService.createAccountService(user.get("fullName"), user.get("email"), user.get("pwd"), user.get("type"));
-            usr.setStatus(false);
-            msg.put("message", "Account created successfully, you'll be able to login when the administrator confirm your account");
+            msg.put("message", "Account created successfully, please check your email.");
+            emailService.sendConfirmationEmail(user.get("email"), "Confirm your email!",
+                                                "Please verifies your Basmashop account by clicking this link : http://localhost:8081/api/verifie?token=" + token.generateurJWTTokern(usr).get("token"));
+
             return new ResponseEntity<>(msg, HttpStatus.CREATED);
         } catch (Exception e) {
             msg.put("message", e.getMessage());
@@ -49,7 +52,6 @@ public class LogginSignupController {
     @PostMapping("/login")
     public ResponseEntity<? extends Object> login(@RequestBody Map<String, String> user) throws AuthException {
 
-        emailService.sendConfirmationEmail("abdelkbirkhouilid32@gmail.com", "test 1", "hello");
 
         Map<String, String> msg = new HashMap<>();
         try {
