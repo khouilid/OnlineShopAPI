@@ -23,4 +23,7 @@ public interface UserServiceInterface {
 
 
     void updateAccoutInfos(Users users);
+
+
+    Users confirmEmail(Long user_id);
 }

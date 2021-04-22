@@ -91,6 +91,15 @@ public class UserService implements UserServiceInterface, UserDetailsService {
         userRepository.save(users);
     }
 
+    public Users confirmEmail(Long user_id){
+        Optional<Users> user = userRepository.findById(user_id);
+        if (!user.isEmpty()){
+
+        user.get().setEmail_validation(true);
+        }
+        return userRepository.save(user.get());
+    }
+
 
     @Override
     public UserDetails loadUserByUsername(String s) throws UsernameNotFoundException {

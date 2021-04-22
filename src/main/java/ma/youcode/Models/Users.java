@@ -32,13 +32,24 @@ public class Users implements Serializable {
     @Column(name = "status")
     private Boolean status = true;
 
+    @Column(name = "email_validation")
+    private Boolean email_validation = false;
+
     public Users() {
     }
 
-    public Users( String fullName, String email, String pwd) {
+    public Users(String fullName, String email, String pwd) {
         this.email = email;
         this.pwd = pwd;
         this.fullName = fullName;
+    }
+
+    public Boolean getEmail_validation() {
+        return email_validation;
+    }
+
+    public void setEmail_validation(Boolean email_validation) {
+        this.email_validation = email_validation;
     }
 
     public Users(String fullName, String email, String pwd, String type) {
@@ -47,6 +58,7 @@ public class Users implements Serializable {
         this.pwd = pwd;
         this.type = type;
     }
+
     public Users(Long id, String fullName, String email, String pwd, String type, Boolean status) {
         this.id = id;
         this.fullName = fullName;
@@ -63,7 +75,6 @@ public class Users implements Serializable {
     public void setStatus(Boolean status) {
         this.status = status;
     }
-
 
 
     public Long getId() {
